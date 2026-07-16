@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Friday Deploy Simulator - keep production alive for twelve seconds."
+    />
+    <meta name="theme-color" content="#0e0e0e" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Friday Deploy Simulator" />
+    <meta
+      property="og:description"
+      content="Approve the diff. Keep production alive for twelve seconds."
+    />
+    <meta
+      property="og:url"
+      content="https://starlash7.github.io/tryeverything/"
+    />
+    <meta
+      property="og:image"
+      content="https://starlash7.github.io/tryeverything/assets/og-card.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Friday Deploy Simulator" />
+    <meta
+      name="twitter:description"
+      content="Production did not survive my code review."
+    />
+    <meta
+      name="twitter:image"
+      content="https://starlash7.github.io/tryeverything/assets/og-card.png"
+    />
+    <title>Friday Deploy Simulator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#game-shell">Skip to game</a>
+
+    <header class="top-bar" role="banner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">GB</span>
+        <div class="brand-copy">
+          <h1>Friday Deploy Simulator</h1>
+          <span class="build-credit">Built with Grok Build</span>
+        </div>
+      </div>
+      <div class="top-metrics" aria-label="Round metrics">
+        <div class="metric">
+          <span class="metric-label">SCORE</span>
+          <span id="score-value" class="metric-value">0</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">COMBO</span>
+          <span id="combo-value" class="metric-value">x0</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">T-</span>
+          <span id="timer-value" class="metric-value">12.0</span>
+        </div>
+        <div class="metric metric-health">
+          <span class="metric-label">HEALTH</span>
+          <div
+            id="health-meter"
+            class="health-meter"
+            role="meter"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="100"
+            aria-label="Production health"
+          >
+            <div id="health-fill" class="health-fill"></div>
+          </div>
+        </div>
+      </div>
+      <label class="sound-toggle">
+        <input id="sound-toggle" type="checkbox" />
+        <span>Sound</span>
+      </label>
+    </header>
+
+    <main id="game-shell" class="game-shell" data-severity="healthy">
+      <section
+        id="terminal"
+        class="terminal"
+        aria-labelledby="terminal-heading"
+      >
+        <div class="panel-chrome">
+          <h2 id="terminal-heading">DIFF REVIEW</h2>
+          <span id="card-clock" class="card-clock" aria-hidden="true">1.25</span>
+        </div>
+        <div class="diff-surface" aria-live="polite" aria-atomic="true">
+          <pre id="diff-code" class="diff-code" tabindex="0">-</pre>
+        </div>
+        <div class="command-row" role="group" aria-label="Review decision">
+          <button id="approve-button" type="button" class="cmd cmd-approve">
+            Approve
+          </button>
+          <button id="reject-button" type="button" class="cmd cmd-reject">
+            Reject
+          </button>
+        </div>
+      </section>
+
+      <aside
+        id="telemetry"
+        class="telemetry"
+        aria-labelledby="telemetry-heading"
+      >
+        <div class="panel-chrome">
+          <h2 id="telemetry-heading">PRODUCTION</h2>
+          <span id="severity-badge" class="severity-badge">NOMINAL</span>
+        </div>
+
+        <canvas
+          id="incident-canvas"
+          width="480"
+          height="220"
+          role="img"
+          aria-label="Server rack status"
+        ></canvas>
+
+        <dl class="tele-grid">
+          <div>
+            <dt>LATENCY</dt>
+            <dd id="latency-value">42ms</dd>
+          </div>
+          <div>
+            <dt>ERRORS</dt>
+            <dd id="errors-value">0.01%</dd>
+          </div>
+          <div>
+            <dt>PAGER</dt>
+            <dd id="pager-value">quiet</dd>
+          </div>
+          <div>
+            <dt>BLOCKED</dt>
+            <dd id="blocked-value">0</dd>
+          </div>
+        </dl>
+
+        <section class="status-feed" aria-labelledby="feed-heading">
+          <h3 id="feed-heading">STATUS</h3>
+          <ul id="status-list" class="status-list" aria-live="polite"></ul>
+        </section>
+      </aside>
+    </main>
+
+    <div
+      id="start-panel"
+      class="start-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="start-title"
+    >
+      <div class="start-inner">
+        <p class="start-kicker">FRIDAY / 16:59:48 UTC</p>
+        <h2 id="start-title">Deploy window open</h2>
+        <dl class="start-status">
+          <div><dt>PRODUCTION</dt><dd>HEALTHY</dd></div>
+          <div><dt>CI</dt><dd>GREEN</dd></div>
+          <div><dt>ROLLBACK</dt><dd>ARMED</dd></div>
+        </dl>
+        <button id="start-button" type="button" class="cmd cmd-start">
+          Open deploy window
+        </button>
+      </div>
+    </div>
+
+    <div
+      id="result-panel"
+      class="result-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="result-title"
+      hidden
+    >
+      <div class="result-inner">
+        <p id="result-kicker" class="result-kicker">ROUND COMPLETE</p>
+        <h2 id="result-title">-</h2>
+        <dl class="result-stats">
+          <div>
+            <dt>ALIVE</dt>
+            <dd id="result-time">0.0s</dd>
+          </div>
+          <div>
+            <dt>BLOCKED</dt>
+            <dd id="result-blocked">0</dd>
+          </div>
+          <div>
+            <dt>SCORE</dt>
+            <dd id="result-score">0</dd>
+          </div>
+        </dl>
+        <div class="result-actions">
+          <button id="retry-button" type="button" class="cmd cmd-retry">
+            Retry
+          </button>
+          <button id="share-button" type="button" class="cmd cmd-share">
+            Share on X
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="app.mjs"></script>
+  </body>
+</html>
