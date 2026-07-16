@@ -39,6 +39,6 @@ test("social preview and GitHub Pages deployment files are present", () => {
   );
 
   const workflow = readFileSync(".github/workflows/pages.yml", "utf8");
-  assert.ok(workflow.includes("actions/deploy-pages@v4"));
+  assert.ok(workflow.includes("actions/deploy-pages@v5"));
   assert.ok(workflow.includes("node --test game.test.mjs ui.test.mjs"));
 });
